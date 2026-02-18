@@ -1,0 +1,35 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Source dot -->
+    <path
+        android:fillColor="#E8A849"
+        android:pathData="M47,60a7,7 0,1 1,14 0a7,7 0,1 1,-14 0z" />
+
+    <!-- Wave 1 (inner) -->
+    <path
+        android:pathData="M40.1,52A16,16 0,0 1,67.9 52"
+        android:strokeColor="#E8A849"
+        android:strokeWidth="3"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000" />
+
+    <!-- Wave 2 (middle) -->
+    <path
+        android:pathData="M33.2,48A24,24 0,0 1,74.8 48"
+        android:strokeColor="#E8A849"
+        android:strokeWidth="3"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000" />
+
+    <!-- Wave 3 (outer) -->
+    <path
+        android:pathData="M26.3,44A32,32 0,0 1,81.7 44"
+        android:strokeColor="#E8A849"
+        android:strokeWidth="3"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000" />
+</vector>
