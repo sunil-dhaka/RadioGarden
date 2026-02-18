@@ -1,6 +1,6 @@
 # RadioGarden
 
-A minimal Android app for streaming radio stations from [radio.garden](https://radio.garden). Paste any radio.garden link, and it resolves the stream for background playback with media controls.
+I've been listening to [radio.garden](https://radio.garden) on my laptop for quite some time now -- it's a beautiful way to explore radio stations from around the world. But their Android app is riddled with ads, and that's just annoying. So here's the solution: a clean, ad-free Android client that does one thing well -- streams radio.garden stations in the background.
 
 ## Features
 
@@ -11,10 +11,6 @@ A minimal Android app for streaming radio stations from [radio.garden](https://r
 - Set a default station, swipe-to-delete with undo
 - Dark-only theme -- warm amber on deep charcoal
 - Pre-loaded with two stations: Radio Aashiqanaa (Kanpur) and Marwar Radio (Pali)
-
-## Screenshots
-
-_Coming soon_
 
 ## Architecture
 
