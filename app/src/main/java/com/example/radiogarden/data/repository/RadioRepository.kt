@@ -18,6 +18,7 @@ data class ResolvedStation(
 sealed class ResolveResult {
     data class SingleStation(val station: ResolvedStation) : ResolveResult()
     data class MultipleStations(val stations: List<PlaceChannelItem>, val placeId: String) : ResolveResult()
+    data class DirectStream(val streamUrl: String) : ResolveResult()
 }
 
 class RadioRepository(
@@ -34,6 +35,10 @@ class RadioRepository(
     suspend fun deleteById(id: Long) = dao.deleteById(id)
 
     suspend fun resolveUrl(url: String): ResolveResult {
+        if (isDirectStreamUrl(url)) {
+            return ResolveResult.DirectStream(url)
+        }
+
         val channelId = extractChannelId(url)
         if (channelId != null) {
             return resolveSingleChannel(channelId)
@@ -48,7 +53,7 @@ class RadioRepository(
             return when {
                 items.isEmpty() -> error("No channels found at this location")
                 items.size == 1 -> {
-                    val id = extractChannelIdFromHref(items.first().href)
+                    val id = extractChannelIdFromPageUrl(items.first().page.url)
                         ?: error("Could not parse channel from place")
                     resolveSingleChannel(id)
                 }
@@ -56,12 +61,12 @@ class RadioRepository(
             }
         }
 
-        error("Could not parse radio.garden URL. Paste a channel or place link.")
+        error("Could not parse URL. Paste a radio.garden link or a direct stream URL.")
     }
 
     suspend fun resolveChannelFromItem(item: PlaceChannelItem): ResolvedStation {
-        val channelId = extractChannelIdFromHref(item.href)
-            ?: error("Could not parse channel ID from: ${item.href}")
+        val channelId = extractChannelIdFromPageUrl(item.page.url)
+            ?: error("Could not parse channel ID from: ${item.page.url}")
         val result = resolveSingleChannel(channelId)
         return (result as ResolveResult.SingleStation).station
     }
@@ -82,9 +87,8 @@ class RadioRepository(
     }
 
     companion object {
-        private val CHANNEL_REGEX = Regex("""/listen/[^/]+/([a-zA-Z0-9]+)""")
-        private val PLACE_REGEX = Regex("""/visit/[^/]+/([a-zA-Z0-9]+)""")
-        private val HREF_CHANNEL_REGEX = Regex("""/listen/([a-zA-Z0-9]+)""")
+        private val CHANNEL_REGEX = Regex("""/listen/[^/]+/([a-zA-Z0-9_]+)""")
+        private val PLACE_REGEX = Regex("""/visit/[^/]+/([a-zA-Z0-9_]+)""")
 
         fun extractChannelId(url: String): String? =
             CHANNEL_REGEX.find(url)?.groupValues?.get(1)
@@ -92,7 +96,13 @@ class RadioRepository(
         fun extractPlaceId(url: String): String? =
             PLACE_REGEX.find(url)?.groupValues?.get(1)
 
-        private fun extractChannelIdFromHref(href: String): String? =
-            HREF_CHANNEL_REGEX.find(href)?.groupValues?.get(1)
+        fun extractChannelIdFromPageUrl(pageUrl: String): String? =
+            CHANNEL_REGEX.find(pageUrl)?.groupValues?.get(1)
+
+        fun isDirectStreamUrl(url: String): Boolean {
+            val lower = url.lowercase()
+            return (lower.startsWith("http://") || lower.startsWith("https://"))
+                && !lower.contains("radio.garden")
+        }
     }
 }

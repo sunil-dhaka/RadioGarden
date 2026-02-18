@@ -17,6 +17,7 @@ import com.example.radiogarden.data.remote.dto.PlaceChannelItem
 import com.example.radiogarden.data.repository.RadioRepository
 import com.example.radiogarden.data.repository.ResolveResult
 import com.example.radiogarden.data.repository.ResolvedStation
+import java.net.URI
 import com.example.radiogarden.playback.RadioPlaybackService
 import com.google.common.util.concurrent.MoreExecutors
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -202,6 +203,10 @@ class RadioViewModel(application: Application) : AndroidViewModel(application) {
                             placeId = result.placeId,
                         )
                     }
+                    is ResolveResult.DirectStream -> {
+                        addDirectStreamStation(result.streamUrl)
+                        _addStationState.value = AddStationState()
+                    }
                 }
             } catch (e: Exception) {
                 _addStationState.value = AddStationState(
@@ -236,6 +241,23 @@ class RadioViewModel(application: Application) : AndroidViewModel(application) {
                 country = station.country,
                 streamUrl = station.streamUrl,
                 website = station.website,
+            )
+        )
+    }
+
+    private suspend fun addDirectStreamStation(streamUrl: String) {
+        val host = try {
+            URI(streamUrl).host ?: streamUrl
+        } catch (_: Exception) {
+            streamUrl
+        }
+        repository.insert(
+            StationEntity(
+                channelId = "stream_${streamUrl.hashCode()}",
+                name = host,
+                place = "",
+                country = "",
+                streamUrl = streamUrl,
             )
         )
     }

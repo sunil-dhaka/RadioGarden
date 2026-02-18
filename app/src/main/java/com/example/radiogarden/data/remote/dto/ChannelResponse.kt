@@ -1,6 +1,5 @@
 package com.example.radiogarden.data.remote.dto
 
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -48,14 +47,15 @@ data class PlaceContent(
 
 @Serializable
 data class PlaceChannelItem(
-    val href: String = "",
-    val title: String = "",
-    @SerialName("page")
     val page: ChannelPage = ChannelPage(),
 )
 
 @Serializable
 data class ChannelPage(
-    val title: String = "",
     val url: String = "",
+    val type: String = "",
+    val title: String = "",
+    val place: PlaceRef = PlaceRef(),
+    val country: CountryRef = CountryRef(),
+    val website: String = "",
 )

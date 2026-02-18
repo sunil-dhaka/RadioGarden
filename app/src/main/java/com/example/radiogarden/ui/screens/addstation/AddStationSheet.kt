@@ -87,7 +87,7 @@ private fun UrlInput(
     var url by rememberSaveable { mutableStateOf("") }
 
     Text(
-        text = "Paste a radio.garden link",
+        text = "Paste a radio.garden link or a direct stream URL",
         style = MaterialTheme.typography.bodyMedium,
         color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
     )
@@ -145,9 +145,9 @@ private fun PlaceStationPicker(
     }
 
     LazyColumn {
-        items(stations, key = { it.href }) { item ->
+        items(stations, key = { it.page.url }) { item ->
             ListItem(
-                headlineContent = { Text(item.title) },
+                headlineContent = { Text(item.page.title) },
                 leadingContent = {
                     Icon(
                         Icons.Default.Radio,
