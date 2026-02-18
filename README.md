@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="banner.svg" alt="RadioGarden Banner" width="100%"/>
+</p>
+
 # RadioGarden
 
 I've been listening to [radio.garden](https://radio.garden) on my laptop for quite some time now -- it's a beautiful way to explore radio stations from around the world. But their Android app is riddled with ads, and that's just annoying. So here's the solution: a clean, ad-free Android client that does one thing well -- streams radio.garden stations in the background.
